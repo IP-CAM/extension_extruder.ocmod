@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Extension extruder</name> 
+  <code>extension_extruder</code>
+  <version>1.10</version>
+  <author>Dmitriy Krotkov</author>
+  <link></link>
+
+<file path="admin/view/template/extension/modification.tpl">
+  <operation>
+    <search trim="true"><![CDATA[
+      <?php if (!$modification['enabled']) { ?>
+    ]]></search>
+    <add position="before"><![CDATA[
+      <style>.btn-extrude{background: #00508a; color: white}.btn-extrude:hover{background: #008cf0; color: white}</style>
+      <a class="btn btn-extrude" href="<?php echo $modification['extrude_extension']; ?>" title="<?php echo $text_extrude_extension; ?>"><i class="fa fa-download"></i></a>
+    ]]></add>
+  </operation>
+</file>
+
+<file path="admin/controller/extension/modification.php">
+  <operation>
+    <search trim="true"><![CDATA[
+      'disable'         => $this->url->link('extension/modification/disable', 'token=' . $this->session->data['token'] . '&modification_id=' . $result['modification_id'], true),
+    ]]></search>
+    <add position="after"><![CDATA[
+      'extrude_extension' => $this->url->link('extension/extension_extruder', 'token=' . $this->session->data['token'] . '&code=' . $result['code'], true),
+    ]]></add>
+  </operation>
+
+  <operation>
+    <search trim="true"><![CDATA[
+     $data['text_refresh'] = $this->language->get('text_refresh');
+    ]]></search>
+    <add position="after"><![CDATA[
+     $this->load->language('extension/extension_extruder');
+     $data['text_extrude_extension'] = $this->language->get('text_extrude_extension');
+    ]]></add>
+  </operation>
+</file>
+
+
+
+
+<file path="admin/view/template/extension/extension/module.tpl">
+  <operation>
+    <search trim="true"><![CDATA[
+      <?php if ($extension['installed']) { ?>
+    ]]></search>
+    <add position="before"><![CDATA[
+      <style>.btn-extrude{background: #00508a; color: white}.btn-extrude:hover{background: #008cf0; color: white}</style>
+      <a class="btn btn-extrude" href="<?php echo $extension['extrude_extension_link']; ?>" title="<?php echo $text_extrude_extension; ?>"><i class="fa fa-download"></i></a>
+    ]]></add>
+  </operation>
+</file>
+
+<file path="admin/controller/extension/extension/module.php">
+  <operation>
+    <search trim="true"><![CDATA[
+      'installed' => in_array($extension, $extensions),
+    ]]></search>
+    <add position="after"><![CDATA[
+      'extrude_extension_link' => $this->url->link('extension/extension_extruder', 'token=' . $this->session->data['token'] . '&code=' . $extension, true),
+    ]]></add>
+  </operation>
+
+  <operation>
+    <search trim="true"><![CDATA[
+     $data['button_uninstall'] = $this->language->get('button_uninstall');
+    ]]></search>
+    <add position="after"><![CDATA[
+     $this->load->language('extension/extension_extruder');
+     $data['text_extrude_extension'] = $this->language->get('text_extrude_extension');
+    ]]></add>
+  </operation>
+</file>
+
+</modification>
